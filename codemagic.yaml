@@ -26,22 +26,6 @@ workflows:
             rm -f android/gradlew.bak
             chmod +x android/gradlew
           fi
-          if [ ! -f android/app/src/main/res/mipmap-mdpi/ic_launcher.png ]; then
-            mkdir -p android/app/src/main/res/mipmap-mdpi
-            mkdir -p android/app/src/main/res/mipmap-hdpi
-            mkdir -p android/app/src/main/res/mipmap-xhdpi
-            mkdir -p android/app/src/main/res/mipmap-xxhdpi
-            mkdir -p android/app/src/main/res/mipmap-xxxhdpi
-            python3 -c "
-from PIL import Image, ImageDraw
-sizes = {'mipmap-mdpi':48,'mipmap-hdpi':72,'mipmap-xhdpi':96,'mipmap-xxhdpi':144,'mipmap-xxxhdpi':192}
-for folder, size in sizes.items():
-    img = Image.new('RGBA',(size,size),(244,247,245,255))
-    d = ImageDraw.Draw(img)
-    d.text((size*0.3,size*0.15), 'A', fill=(26,26,26,255))
-    img.save(f'android/app/src/main/res/{folder}/ic_launcher.png')
-" || echo "Skipping icon fallback (Pillow unavailable) - real icons should already be in the repo."
-          fi
           cat android/gradle/wrapper/gradle-wrapper.properties
           grep classpath android/build.gradle
           grep compileSdk android/app/build.gradle
